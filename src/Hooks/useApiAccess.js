@@ -1,20 +1,13 @@
-import axios from "axios";
-import getBaseUrl from "../Helpers/getBaseUrl";
+import useAxios from "./useAxios";
 
 const useApiAccess = () => {
+  const { postForm } = useAxios();
+
   const uploadImage = async (imageData) => {
     const formData = new FormData();
     formData.append("imageFile", imageData);
 
-    const response = await axios.post(
-      `${getBaseUrl()}/api/camera/upload`,
-      formData,
-      {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      }
-    );
+    const response = await postForm.post("api/camera/upload", formData);
     if (response.status === 200) return response.data;
     return {};
   };
