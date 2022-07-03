@@ -30,9 +30,11 @@ const App = () => {
 
   return (
     <div className="app">
-      <div className="image-container">
-        <img alt="receipt" id="receipt-image" src={imageData.imageSrc} />
-      </div>
+      {imageData.imageSrc && (
+        <div className="image-container">
+          <img alt="receipt" id="receipt-image" src={imageData.imageSrc} />
+        </div>
+      )}
       <div className="camera-container">
         <form
           encType="multipart/form-data"
