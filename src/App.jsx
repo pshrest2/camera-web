@@ -1,16 +1,25 @@
 import React, { useState } from "react";
-import { Button } from "react-bootstrap";
 import useApiAccess from "./Hooks/useApiAccess";
+import BackgroundContainer from "./Components/BackgroundContainer";
+import CustomButton from "./Components/CustomButton";
 
 import "./App.scss";
 
 const App = () => {
   const [imageData, setImageData] = useState({});
+  const [uploading, setUploading] = useState(false);
   const { uploadImage } = useApiAccess();
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-    await uploadImage(imageData.imageFile);
+    try {
+      setUploading(true);
+      await uploadImage(imageData.imageFile);
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setUploading(false);
+    }
   };
 
   const handleImageUpload = (e) => {
@@ -29,34 +38,46 @@ const App = () => {
   };
 
   return (
-    <div className="app">
-      {imageData.imageSrc && (
-        <div className="image-container">
-          <img alt="receipt" id="receipt-image" src={imageData.imageSrc} />
-        </div>
-      )}
+    <BackgroundContainer className="app">
+      <div className="intro">Upload your receipt from phone</div>
+
       <div className="camera-container">
         <form
           encType="multipart/form-data"
           onSubmit={handleFormSubmit}
           method="post"
         >
-          <div className="input-container">
+          <div className="buttons-container">
             <input
               accept="image/*"
               type="file"
               capture="environment"
               onChange={handleImageUpload}
+              id="actual-btn"
+              hidden
             />
-          </div>
-          <div className="button-container">
-            <Button variant="primary" type="submit">
-              Upload
-            </Button>
+            <label htmlFor="actual-btn">Choose Image</label>
+
+            {imageData.imageSrc && (
+              <CustomButton
+                variant="primary"
+                type="submit"
+                disabled={uploading}
+                shadow
+              >
+                Upload
+              </CustomButton>
+            )}
           </div>
         </form>
       </div>
-    </div>
+
+      {imageData.imageSrc && (
+        <div className="image-container">
+          <img alt="receipt" id="receipt-image" src={imageData.imageSrc} />
+        </div>
+      )}
+    </BackgroundContainer>
   );
 };
 
