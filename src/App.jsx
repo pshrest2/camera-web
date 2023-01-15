@@ -17,8 +17,9 @@ const App = () => {
     try {
       setUploading(true);
       await uploadImage(imageData.imageFile);
+      toast.success("Image sent to your main device!");
     } catch (err) {
-      toast.error(err.message, {
+      toast.error("Sorry there was an issue. Please try again later!", {
         position: toast.POSITION.TOP_CENTER,
       });
     } finally {
@@ -64,7 +65,7 @@ const App = () => {
 
             {imageData.imageSrc && (
               <CustomButton
-                variant="primary"
+                variant="success"
                 type="submit"
                 disabled={uploading}
                 shadow
