@@ -2,7 +2,9 @@ import React, { useState } from "react";
 import useApiAccess from "./Hooks/useApiAccess";
 import BackgroundContainer from "./Components/BackgroundContainer";
 import CustomButton from "./Components/CustomButton";
+import { ToastContainer, toast } from "react-toastify";
 
+import "react-toastify/dist/ReactToastify.css";
 import "./App.scss";
 
 const App = () => {
@@ -16,7 +18,9 @@ const App = () => {
       setUploading(true);
       await uploadImage(imageData.imageFile);
     } catch (err) {
-      console.log(err);
+      toast.error(err.message, {
+        position: toast.POSITION.TOP_CENTER,
+      });
     } finally {
       setUploading(false);
     }
@@ -77,6 +81,7 @@ const App = () => {
           <img alt="receipt" id="receipt-image" src={imageData.imageSrc} />
         </div>
       )}
+      <ToastContainer />
     </BackgroundContainer>
   );
 };
